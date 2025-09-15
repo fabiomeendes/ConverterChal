@@ -14,6 +14,12 @@ This project is a coding challenge focused on building an API that receives a JS
 2. The application will start on http://localhost:5210
 Open the Swagger UI for testing endpoints: http://localhost:5210/swagger
 
+## Project Structure
+
+- Converter.Api → ASP.NET Core Web API (controllers, DI, Swagger, conversion service).
+- Converter.Core → DTOs, XML models, converter interface.
+- Converter.UnitTests → xUnit tests (validation, mapping, endpoints).
+
 ## Clarifications & Assumptions
 1. **Sample XML is not well-formed**
 The provided sample output opens <ContactInformation> but never closes it. Valid XML requires a matching closing tag.
