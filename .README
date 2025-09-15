@@ -1,0 +1,50 @@
+
+# Converter Challenge
+
+This project is a coding challenge focused on building an API that receives a JSON input and produces a well-formed XML output. It validates the request against a few business rules (status, publish date, and test run), then transforms the input structure into a structured XML document. The challenge highlights clear separation of concerns, validation, and JSON→XML serialization practices in .NET.
+
+## Clarifications & Assumptions
+1. **Sample XML is not well-formed**
+The provided sample output opens <ContactInformation> but never closes it. Valid XML requires a matching closing tag.
+What we do: we always emit well-formed XML, i.e., we include </ContactInformation> before </PublishedItem>.
+
+2. **"Contacts" → "PersonGroup" mapping** 
+The input shape is:
+- ReportMetadata.ContactSection[]
+    - ContactInformation[]
+        - ContactHeader (e.g., "Media Contact"
+        - Contacts[] (people)
+
+There were no explicit rules on how to map these arrays. We made the following explicit assumption:
+
+Each non-blank contact becomes its own <PersonGroup> with:
+- sequence incrementing 1..N in encounter order
+- <Name> = ContactHeader
+- One <PersonGroupMember> containing that person
+
+3. **Skipping blank contacts**
+
+Some contact entries are completely empty (FirstName == "" and LastName == "").
+What we do: we skip those—there is no value in emitting empty people.
+
+4. **Countries**
+
+CountryIds is serialized as a single string inside <Countries> (e.g., US,BR).
+
+5) **Special characters (&)**
+
+In XML text nodes, & must be escaped as &amp; what is expected.
+
+6) **Validation vs sample input**
+
+Per the challenge spec, the API must fail when:
+- Status != 3
+- PublishDate < 2024-08-24
+- Not a test run (TestRun == false)
+
+The provided sample input has TestRun: false, so our API returns 400 with a standard validation ProblemDetails. That is intentional to follow the spec.
+
+### Open questions:
+- Grouping model: keep “one PersonGroup per contact” (current) or “one PersonGroup per header with multiple members”?
+- Countries: single <Countries> string vs repeated <Country> elements?
+- Accreditation / other fields: include as additional elements under <Person> or omit? (We currently omit because the sample didn’t include it.)

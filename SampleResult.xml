@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PublishedItem>
+    <Title>Title of report</Title>
+    <Countries></Countries>
+    <PublishedDate>2024-08-26T18:19:59Z</PublishedDate>
+    <ContactInformation>
+    <PersonGroup sequence="1">
+        <Name>Analytical Contacts</Name>
+        <PersonGroupMember>
+            <Person>
+                <FamilyName>Johnsen</FamilyName>
+                <GivenName>Mike</GivenName>
+                <DisplayName>Mike Johnsen</DisplayName>
+                <JobTitle>Job Title</JobTitle>
+                <ContactInfo>
+                    <Phone>
+                        <Number>1-646-731-2332</Number>
+                    </Phone>
+                </ContactInfo>
+            </Person>
+        </PersonGroupMember>
+    </PersonGroup>
+</PublishedItem>
