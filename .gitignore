@@ -1,0 +1,8 @@
+# Ignore Visual Studio cache
+.vs/
+*.user
+*.suo
+*.vsidx
+*.vscode/
+bin/
+obj/

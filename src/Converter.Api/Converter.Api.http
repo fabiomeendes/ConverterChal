@@ -1,0 +1,6 @@
+@Converter.Api_HostAddress = http://localhost:5210
+
+GET {{Converter.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
