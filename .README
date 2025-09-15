@@ -3,6 +3,17 @@
 
 This project is a coding challenge focused on building an API that receives a JSON input and produces a well-formed XML output. It validates the request against a few business rules (status, publish date, and test run), then transforms the input structure into a structured XML document. The challenge highlights clear separation of concerns, validation, and JSON→XML serialization practices in .NET.
 
+## Running the Project
+
+1. Navigate to the API project folder:
+   ```bash
+   cd src/Converter.Api
+   dotnet restore
+   dotnet run
+
+2. The application will start on http://localhost:5210
+Open the Swagger UI for testing endpoints: http://localhost:5210/swagger
+
 ## Clarifications & Assumptions
 1. **Sample XML is not well-formed**
 The provided sample output opens <ContactInformation> but never closes it. Valid XML requires a matching closing tag.
