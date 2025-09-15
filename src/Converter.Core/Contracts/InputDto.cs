@@ -9,7 +9,6 @@ public sealed class InputDto
     public List<string>? CountryIds { get; set; }
     public string? Title { get; set; }
     public DateTimeOffset PublishDate { get; set; }
-
     public int Status { get; set; }
 
     [JsonPropertyName("TestRun")]

@@ -20,7 +20,6 @@ public class PublishedItemXml
 
 public class ContactInformationXml
 {
-    // ALLOW MULTIPLE GROUPS
     [XmlElement("PersonGroup", Order = 1)]
     public List<PersonGroupXml> PersonGroups { get; set; } = new();
 }
@@ -54,10 +53,10 @@ public class PersonXml
     [XmlElement(Order = 3)]
     public string? DisplayName { get; set; }
 
-    [XmlElement("JobTitle", Order = 4)]
+    [XmlElement(Order = 4)]
     public string? JobTitle { get; set; }
 
-    [XmlElement(Order = 6)]
+    [XmlElement(Order = 5)]
     public ContactInfoXml? ContactInfo { get; set; }
 }
 

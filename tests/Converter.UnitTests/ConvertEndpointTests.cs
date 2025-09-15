@@ -15,10 +15,10 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
     }
 
     [Fact]
-    public async Task JsonToXml_Returns_File_When_Spec_Passes()
+    public async Task JsonToXml_SpecPasses_ReturnsFile()
     {
+        // Arrange
         var client = _factory.CreateClient();
-
         var req = new
         {
             Id = "TCnWpDVD",
@@ -52,12 +52,16 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
             TestRun = true
         };
 
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", req);
 
+        // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
         res.Content.Headers.ContentType!.MediaType.Should().Be("application/xml");
         res.Content.Headers.ContentDisposition!.DispositionType.Should().Be("attachment");
-        res.Content.Headers.ContentDisposition!.FileName!.Trim('"').EndsWith(".xml", StringComparison.OrdinalIgnoreCase).Should().BeTrue();
+        res.Content.Headers.ContentDisposition!.FileName!
+            .Trim('"')
+            .EndsWith(".xml", StringComparison.OrdinalIgnoreCase).Should().BeTrue();
 
         var xml = await res.Content.ReadAsStringAsync();
         xml.Should().Contain("<PublishedItem>");
@@ -69,10 +73,10 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
     }
 
     [Fact]
-    public async Task JsonToXml_BadRequest_When_TestRun_False()
+    public async Task JsonToXml_TestRunFalse_ReturnsBadRequestProblem()
     {
+        // Arrange
         var client = _factory.CreateClient();
-
         var req = new
         {
             Id = "X",
@@ -81,18 +85,20 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
             TestRun = false
         };
 
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", req);
-        res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
+        // Assert
+        res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var body = await res.Content.ReadAsStringAsync();
         body.Should().Contain("TestRun=true");
     }
 
     [Fact]
-    public async Task JsonToXml_BadRequest_When_Status_Not_3()
+    public async Task JsonToXml_StatusNot3_ReturnsBadRequestProblem()
     {
+        // Arrange
         var client = _factory.CreateClient();
-
         var req = new
         {
             Id = "X",
@@ -101,15 +107,18 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
             TestRun = true
         };
 
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", req);
+
+        // Assert
         res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     [Fact]
-    public async Task JsonToXml_BadRequest_When_PublishDate_Before_Cutoff()
+    public async Task JsonToXml_PublishDateBeforeCutoff_ReturnsBadRequestProblem()
     {
+        // Arrange
         var client = _factory.CreateClient();
-
         var req = new
         {
             Id = "X",
@@ -118,7 +127,10 @@ public class ConvertEndpointTests : IClassFixture<WebApplicationFactory<Program>
             TestRun = true
         };
 
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", req);
+
+        // Assert
         res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }

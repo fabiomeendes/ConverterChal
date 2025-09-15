@@ -1,0 +1,92 @@
+{
+   "Id":"TCnWpDVD",
+   "ReportMetadata":{
+      "Title":"Document for Publication > Best Report Yet!!",
+      "ContactSection":[
+         {
+            "ContactInformation":[
+               {
+                  "ContactHeader":"Media Contact",
+                  "Contacts":[
+                     {
+                        "FirstName":"Mike",
+                        "LastName":"Johnsen",
+                        "Email":"mike.johnsen@kbra.com",
+                        "Title":"Director of Communications & Marketing",
+                        "PhoneNumber":"+1 646-731-1347",
+                        "Accreditation":"CM&AA"
+                     },
+                     {
+                        "FirstName":"",
+                        "LastName":"",
+                        "Email":"",
+                        "Title":"",
+                        "PhoneNumber":"",
+                        "Accreditation":""
+                     }
+                  ]
+               },
+               {
+                  "ContactHeader":"Analytical Contacts",
+                  "Contacts":[
+                     {
+                        "FirstName":"Fabio",
+                        "LastName":"Camillo",
+                        "Email":"fabiomcamillo@gmail.com",
+                        "Title":"CTO",
+                        "PhoneNumber":"+1 777-731-1347",
+                        "Accreditation":"aaaa"
+                     },
+                     {
+                        "FirstName":"Fabio 2",
+                        "LastName":"Camillo 2",
+                        "Email":"fabiomcamillo2@gmail.com",
+                        "Title":"CTO2",
+                        "PhoneNumber":"+1 777-888-1347",
+                        "Accreditation":"bbbb"
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "ContactInformation":[
+               {
+                  "ContactHeader":"Lorem Contact",
+                  "Contacts":[
+                     {
+                        "FirstName":"Lorem",
+                        "LastName":"Ipsum",
+                        "Email":"Lorem.Ipsum@kbra.com",
+                        "Title":"Lorem of Communications & Marketing",
+                        "PhoneNumber":"+1 886-731-1347",
+                        "Accreditation":"CM&AA"
+                     }
+                  ]
+               },
+               {
+                  "ContactHeader":"Ipsum Contact",
+                  "Contacts":[
+                     {
+                        "FirstName":"Ipsum",
+                        "LastName":"Lorem",
+                        "Email":"Ipsum.Lorem@kbra.com",
+                        "Title":"Ipsum of Communications & Marketing",
+                        "PhoneNumber":"+1 996-731-1347",
+                        "Accreditation":"CM&AA"
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   "CountryIds":[
+      "US",
+      "BR"
+   ],
+   "Title":"Document for Publication > Best Report Yet!!",
+   "PublishDate":"2024-08-26T18:19:59Z",
+   "Status":3,
+   "TestRun":true
+}

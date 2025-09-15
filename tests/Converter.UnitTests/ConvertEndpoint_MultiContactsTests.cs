@@ -89,11 +89,15 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
     };
 
     [Fact]
-    public async Task MultiContacts_Returns_File_And_ValidXml()
+    public async Task JsonToXml_MultipleContacts_ReturnsFileAndValidXml()
     {
+        // Arrange
         var client = _factory.CreateClient();
+
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", BuildPayload());
 
+        // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
         res.Content.Headers.ContentType!.MediaType.Should().Be("application/xml");
 
@@ -111,13 +115,17 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
     }
 
     [Fact]
-    public async Task MultiContacts_Builds_Three_PersonGroups_With_Sequential_Sequences_And_Names_From_Header()
+    public async Task JsonToXml_MultipleContacts_BuildsThreeGroupsWithSequentialSequencesAndHeaders()
     {
+        // Arrange
         var client = _factory.CreateClient();
+
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", BuildPayload());
         var xml = await res.Content.ReadAsStringAsync();
         var doc = XDocument.Parse(xml);
 
+        // Assert
         var groups = doc.Root!
             .Element("ContactInformation")!
             .Elements("PersonGroup")
@@ -135,13 +143,17 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
     }
 
     [Fact]
-    public async Task MultiContacts_Maps_First_Group_Mike_Correctly_And_Normalizes_Phone()
+    public async Task JsonToXml_MultipleContacts_MapsFirstGroupMikeCorrectlyAndNormalizesPhone()
     {
+        // Arrange
         var client = _factory.CreateClient();
+
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", BuildPayload());
         var xml = await res.Content.ReadAsStringAsync();
         var doc = XDocument.Parse(xml);
 
+        // Assert
         var firstMemberPerson = doc.Root!
             .Element("ContactInformation")!
             .Elements("PersonGroup").ElementAt(0)!
@@ -151,7 +163,6 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
         firstMemberPerson.Element("GivenName")!.Value.Should().Be("Mike");
         firstMemberPerson.Element("FamilyName")!.Value.Should().Be("Johnsen");
         firstMemberPerson.Element("DisplayName")!.Value.Should().Be("Mike Johnsen");
-
         firstMemberPerson.Element("JobTitle")!.Value.Should().Be("Director of Communications & Marketing");
 
         var number = firstMemberPerson
@@ -163,13 +174,17 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
     }
 
     [Fact]
-    public async Task MultiContacts_Maps_Second_Group_Fabio_And_Third_Group_Fabio2()
+    public async Task JsonToXml_MultipleContacts_MapsSecondGroupFabioAndThirdGroupFabio2()
     {
+        // Arrange
         var client = _factory.CreateClient();
+
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", BuildPayload());
         var xml = await res.Content.ReadAsStringAsync();
         var doc = XDocument.Parse(xml);
 
+        // Assert
         var groups = doc.Root!
             .Element("ContactInformation")!
             .Elements("PersonGroup")
@@ -196,18 +211,21 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
         g3person.Element("JobTitle")!.Value.Should().Be("CTO2");
 
         var g3number = g3person.Element("ContactInfo")!.Element("Phone")!.Element("Number")!.Value;
-
         g3number.Should().Be("1-777-888-1347");
     }
 
     [Fact]
-    public async Task MultiContacts_Skips_Completely_Blank_Contact_Entries()
+    public async Task JsonToXml_MultipleContacts_SkipsBlankContacts()
     {
+        // Arrange
         var client = _factory.CreateClient();
+
+        // Act
         var res = await client.PostAsJsonAsync("/convert/json-to-xml", BuildPayload());
         var xml = await res.Content.ReadAsStringAsync();
         var doc = XDocument.Parse(xml);
 
+        // Assert
         var groups = doc.Root!
             .Element("ContactInformation")!
             .Elements("PersonGroup")
@@ -221,5 +239,24 @@ public class ConvertEndpoint_MultiContactsTests : IClassFixture<WebApplicationFa
             p.Element("GivenName")!.Value.Should().NotBeNullOrEmpty();
             p.Element("FamilyName")!.Value.Should().NotBeNullOrEmpty();
         }
+    }
+
+    [Fact]
+    public async Task JsonToXml_InvalidPublishDate_ReturnsProblemDetails()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+        var req = new { Status = 3, PublishDate = "2024-08-23T23:59:59Z", TestRun = true }; // too early
+
+        // Act
+        var res = await client.PostAsJsonAsync("/convert/json-to-xml", req);
+
+        // Assert
+        res.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        res.Content.Headers.ContentType!.MediaType.Should().Be("application/problem+json");
+
+        var json = await res.Content.ReadAsStringAsync();
+        json.Should().Contain("\"title\":\"One or more validation errors occurred.\"");
+        json.Should().Contain("PublishDate must be on or after 2024-08-24.");
     }
 }
